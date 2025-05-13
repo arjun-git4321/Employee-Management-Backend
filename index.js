@@ -10,12 +10,14 @@ app.use(express.json())
 
 
 const userRoute=require("./routes/User");
+const departmentRoute=require("./routes/Department")
 
 const connection=require('./configuration/database');
 connection.dbConnect();
 
 app.use(cookieParser());
 app.use("/api/v1/auth",userRoute);
+app.use("/api/v1/departments",departmentRoute)
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running in ${process.env.PORT}`);
