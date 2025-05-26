@@ -16,7 +16,7 @@ const UserModel=new mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["Admin","Student"],
+        enum:["Admin","Employee"],
         required:true
     },
     // profile:{type:String},

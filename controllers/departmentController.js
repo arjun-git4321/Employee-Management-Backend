@@ -36,12 +36,11 @@ exports.AddDepartment=async(req,res)=>{
 
     }
    
-
-
 }
 
-exports.addDepartment=async (req,res)=>{
+exports.fetchDepartment=async (req,res)=>{
     try{
+        
         const departments=await model.find();
         res.status(200).json({
             success:true,
@@ -53,7 +52,7 @@ exports.addDepartment=async (req,res)=>{
     catch(error){
         res.status(500).json({
             success:false,
-            message:'getting ddepatment server error'
+            message:'getting department server error'
         })
 
 
