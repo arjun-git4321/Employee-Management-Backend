@@ -15,6 +15,7 @@ const storage=multer.diskStorage({
     }
 })
 
+
 exports.upload=multer({storage:storage})
 
 
@@ -94,4 +95,23 @@ exports.fetchEmployee=async(req,res)=>{
     }
 
 
+}
+exports.getEmployee=async(req,res)=>{
+    const {id}=req.params;
+    try{
+        const employee=await Employee.findById(id).populate('userId',{password:0}).populate("department")
+        return res.status(200).json({
+            success:true,
+            message:'employee find successfully',
+            employee
+        })
+
+    }
+    catch(e){
+        return res.status(500).json({
+            success:false,
+            message:'Error while fetching the employee'
+        })
+
+    }
 }
