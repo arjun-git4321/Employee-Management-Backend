@@ -4,6 +4,7 @@ const User=require("../Models/User");
 const bcrypt=require("bcrypt")
 const multer=require("multer")
 const path=require("path")
+const Department=require("../Models/Department")
 
 
 const storage=multer.diskStorage({
@@ -114,4 +115,77 @@ exports.getEmployee=async(req,res)=>{
         })
 
     }
+}
+
+exports.updateEmployee=async(req,res)=>{
+    try{
+        const {id}=req.params;
+        const {name,martialStatus,designation,department,salary}=req.body;
+
+        // console.log('Employee ID to update:', req.params.id);
+
+
+        const employee=await Employee.findById({_id:id})
+        if(!employee){
+            return res.status(404).json({
+                success:false,
+                message:"Employee not found"
+            })
+        }
+        const user=await User.findById({_id:employee.userId})
+        if(!user){
+            return res.status(404).json({
+                success:false,
+                message:"user not found"
+            })
+        }
+
+        const updateUser=await User.findByIdAndUpdate({_id:employee.userId},{name})
+        const updateEmployee=await Employee.findByIdAndUpdate({_id:id},{
+            martialStatus,designation,salary,department
+        })
+        if(!updateUser || !updateEmployee){
+            return res.status(404).json({
+                success:false,
+                message:"document not found"
+            })
+
+        }
+        return res.status(200).json({
+            success:true,
+            message:"updated successfully"
+        })
+        
+
+    }
+    catch(error){
+        return res.status(500).json({
+            success:false,
+            message:'error while updating the employee'
+        })
+
+    }
+
+}
+
+exports.fetchEmpByDepId=async(req,res)=>{
+    const{id}=req.params;
+    try{
+        const employees=await Employee.find({department:id})
+        return res.status(200).json({
+            success:true,
+            message:'fetch successfully',
+            employees
+        })
+        
+
+    }
+    catch(error){
+        return res.status(500).json({
+            success:false,
+            message:'get employesGetDepById server error'
+        })
+
+    }
+
 }
